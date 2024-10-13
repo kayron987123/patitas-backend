@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pe.edu.cibertec.patitas_backend.dto.LoginRequestDTO;
 import pe.edu.cibertec.patitas_backend.dto.LoginResponseDTO;
+import pe.edu.cibertec.patitas_backend.dto.LogoutRequestDTO;
+import pe.edu.cibertec.patitas_backend.dto.LogoutResponseDTO;
 import pe.edu.cibertec.patitas_backend.service.AutenticacionService;
+import pe.edu.cibertec.patitas_backend.service.SalidaService;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -18,6 +21,9 @@ public class AutenticacionController {
 
     @Autowired
     AutenticacionService autenticacionService;
+
+    @Autowired
+    SalidaService salidaService;
 
     @PostMapping("/login")
     public LoginResponseDTO login(@RequestBody LoginRequestDTO loginRequestDTO){
@@ -36,6 +42,24 @@ public class AutenticacionController {
 
         } catch (Exception e) {
             return new LoginResponseDTO("99", "Error: Ocurrio un problema", "", "");
+        }
+    }
+
+    @PostMapping("/logout")
+    public LogoutResponseDTO logout(@RequestBody LogoutRequestDTO logoutRequestDTO){
+        System.out.println(logoutRequestDTO);
+        try {
+            Thread.sleep(Duration.ofSeconds(5));
+
+            if (logoutRequestDTO == null) {
+                return new LogoutResponseDTO("99", "Error: al guardar la salida" + logoutRequestDTO);
+            }
+
+            salidaService.registrarSalida(logoutRequestDTO.nombreUsuario());
+
+            return new LogoutResponseDTO("00", "Sesion cerrada correctamente");
+        } catch (Exception e) {
+            return new LogoutResponseDTO("99", "Error: Ocurrio un problema");
         }
     }
 }
