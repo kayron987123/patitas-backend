@@ -49,7 +49,7 @@ public class AutenticacionController {
     public LogoutResponseDTO logout(@RequestBody LogoutRequestDTO logoutRequestDTO){
         System.out.println(logoutRequestDTO);
         try {
-            Thread.sleep(Duration.ofSeconds(5));
+            Thread.sleep(Duration.ofSeconds(9));
 
             if (logoutRequestDTO == null) {
                 return new LogoutResponseDTO("99", "Error: al guardar la salida" + logoutRequestDTO);
